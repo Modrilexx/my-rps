@@ -48,3 +48,22 @@ Use `unit`, `integration`, and `e2e` pytest markers. Run `.venv/bin/python check
 - Pull request / CI: add actual URLs when they exist.
 - Implementation: **Not implemented.** The shell is supplied; `game.py` is unfinished.
 - Checks: **Rules not verified.** Supplied request/browser tests cover the shell only. After implementation, record actual full-check results and your browser observations here; put detailed results in the PR. Passing formatting and analysis alone is not evidence of correct rules.
+
+## Verification Results
+
+**Full local checks:** Passed using `.venv/bin/python check.py`.
+
+- Black formatting: PASS
+- Pylint: PASS
+- Non-browser tests: 23 passed
+- Chromium browser tests: 6 passed
+
+**Actual browser round:**
+- Player chose: Rock
+- Computer chose: Scissors
+- Result: Win
+- Explanation: Rock beats scissors, so the result is correct.
+
+**Test explanation:** The unit test for rock against scissors expects `win`. It would catch an incorrect implementation that reversed the winner or returned `lose`.
+
+**GitHub issue:** https://github.com/Modrilexx/my-rps/issues/1
