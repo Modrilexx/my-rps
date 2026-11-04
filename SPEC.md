@@ -67,3 +67,5 @@ Use `unit`, `integration`, and `e2e` pytest markers. Run `.venv/bin/python check
 **Test explanation:** The unit test for rock against scissors expects `win`. It would catch an incorrect implementation that reversed the winner or returned `lose`.
 
 **GitHub issue:** https://github.com/Modrilexx/my-rps/issues/1
+
+Successful Run: https://github.com/Modrilexx/my-rps/pull/2/
