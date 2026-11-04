@@ -1,61 +1,91 @@
-# Rock, Paper, Scissors
+# RPS-001: Play a Round
 
-## RPS-001: Play a round
+## Purpose
 
-**Purpose:** One person plays a quick round against the computer.
+Build a working Rock, Paper, Scissors game that determines the correct winner for one independent round. The player chooses rock, paper, or scissors, and the computer selects a move. The game displays both choices and the result.
 
-- Choose rock, paper, or scissors. The computer chooses one move for that round.
-- Display both choices and the result: **You win!**, **Computer wins**, or **It’s a tie**.
-- Choosing again starts an independent round. No score or saved history.
-- Keep the supplied interface and server. Name/color changes can wait until the rules work.
+Each new selection starts another round without storing scores or previous results.
 
-### Expected results
+## Prediction and Plan
 
-Results are from the **player’s perspective**. `determine_winner(player, computer)` in `game.py` returns `win`, `lose`, or `tie`. Inputs are the lowercase moves below; the supplied server rejects other choices.
+**Prediction:** If I choose rock and the computer chooses scissors, I expect to win because rock beats scissors.
 
-| Player | Computer | Expected return |
-| --- | --- | --- |
-| rock | rock | tie |
-| rock | paper | lose |
-| rock | scissors | win |
-| paper | rock | win |
-| paper | paper | tie |
-| paper | scissors | lose |
-| scissors | rock | lose |
-| scissors | paper | win |
-| scissors | scissors | tie |
+**Losing example:** If I choose rock and the computer chooses paper, I should lose because paper beats rock.
 
-### Agreed plan (review and confirm in the local AI project)
+**Invalid input:** Missing or unsupported moves must return HTTP 400 with a helpful error message.
 
-**Proposed prediction:** Player selects rock and computer selects paper. Expected result is `lose`, because paper covers rock. Confirm or replace this with your own prediction and explanation before treating the plan as agreed.
+**Implementation plan:**
 
-Implement only the rules in `determine_winner()` and keep the existing Flask server and interface. Return `tie` when moves match, `win` when the player's move beats the computer, and `lose` otherwise. A valid losing round is rock versus paper; it must show **Computer wins** rather than an error. The server must reject a missing move or unsupported value such as `lizard` with HTTP 400 and a helpful message. No scoring, persistence, framework changes, or AI API.
+1. Implement `determine_winner(player, computer)` in `game.py`.
+2. Return `win`, `lose`, or `tie` from the player's perspective.
+3. Test all nine possible matchups.
+4. Test valid and invalid HTTP requests.
+5. Test a real browser round and replay.
+6. Run Black, Pylint, pytest, and Chromium browser checks.
+7. Review the changes and verify the game manually.
 
-### Checks
+## Expected Results
 
-| Level | Cases and evidence |
-| --- | --- |
-| Unit — positive | Nine separate literal tests in `tests/test_game.py` match the table above, including losses and ties. |
-| Integration — positive | A real Flask POST from rock against fixed computer scissors shows both moves, `win`, and **You win!**. Only `random.choice` is patched. |
-| Integration — negative | Keep and rerun the starter's missing/unsupported-move tests; both must return HTTP 400 and a helpful message, without executing the rules. |
-| E2E — positive | Real Chromium browser picks rock, gets fixed scissors and a win; a second click picks rock, gets fixed paper and a loss. The actual rule function and HTTP server remain active. |
+| Player | Computer | Result |
+|---|---|---|
+| Rock | Rock | Tie |
+| Rock | Paper | Lose |
+| Rock | Scissors | Win |
+| Paper | Rock | Win |
+| Paper | Paper | Tie |
+| Paper | Scissors | Lose |
+| Scissors | Rock | Lose |
+| Scissors | Paper | Win |
+| Scissors | Scissors | Tie |
 
-Use `unit`, `integration`, and `e2e` pytest markers. Run `.venv/bin/python check.py` (not `--fast`) for Black, Pylint, non-browser tests, and real-browser tests; inspect the diff. Do not weaken shared settings or assertions.
+## Implementation
 
-### Work record — replace placeholders with your actual evidence
+The winner logic is implemented in `determine_winner()` using the existing server and interface. Matching moves produce a tie. Otherwise, the function determines whether the player's move beats the computer's move.
 
-- Issue: **ADD your own GitHub issue URL here**.
-- Feature branch: `rps-001`.
-- Pull request (merged): **ADD actual PR URL here**.
-- Python checks run on final PR commit: **ADD actual GitHub Actions run URL here**.
-- Implementation: [game.py](game.py).
-- Unit and integration tests: [tests/test_game.py](tests/test_game.py).
-- E2E browser test: [tests/e2e/test_round.py](tests/e2e/test_round.py).
-- Existing HTTP 400 checks: Preserve and reference the relevant original starter test file(s) here after inspecting the clone.
-- Full local checks (`.venv/bin/python check.py`): **NOT YET VERIFIED IN YOUR CLONE — replace with actual observed Black, Pylint, non-browser pytest, and Chromium results**.
-- Example of a test and the mistake it would catch: `test_rock_paper_lose` asserts `determine_winner("rock", "paper") == "lose"`. It would catch a reversed comparison that incorrectly awards rock a win against paper. Review and explain it in your own words.
-- Actual browser round: **After playing, record your move, the computer's move, on-screen result, and why that result follows RPS rules. Do not invent a round.**
-- Replay and keyboard observation: **Record what actually happened after another click, and when using Tab/Enter (Safari may need Option+Tab).**
-- AI assistance: ChatGPT helped prepare an implementation, automated tests, and an evidence template; the student reviewed and completed the local/GitHub verification.
+The game allows the player to select another move immediately, starting an independent round.
 
-Finish the actual issue, PR, checks, and browser observations before merging; do not present placeholders as completed evidence.
+## Testing and Verification
+
+**Full local check command:**
+
+`.venv/bin/python check.py`
+
+**Actual results:**
+
+- Black formatting: PASS
+- Pylint code analysis: PASS
+- Non-browser pytest: 23 passed
+- Chromium browser pytest: 6 passed
+- Total: 29 passed
+- All configured checks passed.
+
+The tests cover the nine outcomes, real HTTP request handling, invalid inputs, browser interaction, and replay.
+
+**Test explanation:** The unit test for rock against scissors expects `win`. It would catch a mistake where the winner logic incorrectly returns `lose` or reverses the rules.
+
+## Actual Browser Verification
+
+**Observed round:**
+
+- Player chose: Rock
+- Computer chose: Scissors
+- Displayed result: You win!
+- Explanation: Rock beats scissors, so the result is correct.
+
+The game displays both moves and the result. Selecting another move starts another round. Keyboard interaction can be tested using Tab to focus a move and Enter to activate it.
+
+## GitHub Evidence
+
+- **Issue:** https://github.com/Modrilexx/my-rps/issues/1
+- **Feature branch:** `rps-001`
+- **Pull request:** https://github.com/Modrilexx/my-rps/pull/2
+- **Successful CI run:** https://github.com/Modrilexx/my-rps/actions/runs/41765952156
+- **Implementation:** https://github.com/Modrilexx/my-rps/blob/rps-001/game.py
+- **Unit and integration tests:** https://github.com/Modrilexx/my-rps/blob/rps-001/tests/test_game.py
+- **Browser tests:** https://github.com/Modrilexx/my-rps/blob/rps-001/tests/e2e/test_round.py
+
+## AI Assistance and Review
+
+ChatGPT assisted with the implementation, automated tests, and preparation of the verification documentation. I reviewed the code changes, ran the full checks locally, and verified an actual game round in the browser.
+
+The implementation retains the supplied interface and server without adding scoring, storage, accounts, or additional frameworks.
