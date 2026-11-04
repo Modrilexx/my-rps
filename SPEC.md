@@ -89,3 +89,6 @@ The game displays both moves and the result. Selecting another move starts anoth
 ChatGPT assisted with the implementation, automated tests, and preparation of the verification documentation. I reviewed the code changes, ran the full checks locally, and verified an actual game round in the browser.
 
 The implementation retains the supplied interface and server without adding scoring, storage, accounts, or additional frameworks.
+**GitHub issue:** https://github.com/Modrilexx/my-rps/issues/1
+
+Successful Run: https://github.com/Modrilexx/my-rps/pull/2/
